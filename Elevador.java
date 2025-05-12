@@ -1,105 +1,79 @@
-import java.util.Scanner;
+// Interface Elevador
+public interface Elevador {
+    void inicializar(int capacidade, int totalAndares);
+    void entrar();
+    void sair();
+    void subir();
+    void descer();
 
-class Elevador {
-    //Parametro!!!!!!!!!!!!
-    int andarAtual = 0;
-    int andaresPredio = 0;
-    int capacidadeElevador = 0;
-    int pessoas = 0;
 
-    void inicializar(int capacidadeElevador,int andaresPredio){
-        this.capacidadeElevador = capacidadeElevador;
-        this.andaresPredio = andaresPredio;
+// Classe que implementa a interface Elevador
+public class ElevadorImpl implements Elevador {
+    private int andarAtual;
+    private int totalAndares;
+    private int capacidade;
+    private int pessoasPresentes;
+
+    // Método inicializar: configura capacidade e total de andares; inicializa o andar e pessoas presentes.
+    @Override
+    public void inicializar(int capacidade, int totalAndares) {
+        this.capacidade = capacidade;
+        this.totalAndares = totalAndares;
+        this.andarAtual = 0;  // Inicia no térreo
+        this.pessoasPresentes = 0;  // Inicia vazio
     }
 
-    void entrar(){
-        if (pessoas <= capacidadeElevador) {
-            this.pessoas++;
-        }
-        else{
-            System.out.println("LOTADO");
-        }
-    }
-
-    void sair(){
-        if (pessoas != 0) {
-            this.pessoas--;
-        }
-        else{
-            System.out.println("Elevador esta vazio");
-        }
-    }
-
-    void subir(){
-        if (andarAtual < andaresPredio) {
-            this.andarAtual++;
-        }
-        else{
-            System.out.println("Nao tem andar para cima");
+    // Método entrar: adiciona uma pessoa se houver espaço.
+    @Override
+    public void entrar() {
+        if (pessoasPresentes < capacidade) {
+            pessoasPresentes++;
+            System.out.println("Uma pessoa entrou. Pessoas presentes: " + pessoasPresentes);
+        } else {
+            System.out.println("Elevador cheio! Capacidade máxima: " + capacidade);
         }
     }
 
-    void descer(){
-        if (andarAtual != 0) {
-            this.andarAtual--;
-        }
-        else{
-            System.out.println("Nao tem andar para baixo");
-        }
-    }
-
-    boolean estaVazio(){
-        if (pessoas == 0) {
-            return true;
-        }
-        else{
-            return false;
+    // Método sair: remove uma pessoa se houver alguém dentro.
+    @Override
+    public void sair() {
+        if (pessoasPresentes > 0) {
+            pessoasPresentes--;
+            System.out.println("Uma pessoa saiu. Pessoas presentes: " + pessoasPresentes);
+        } else {
+            System.out.println("Elevador vazio!");
         }
     }
 
-    int pessoasPresentes(){
-        return this.pessoas;
+    // Método subir: sobe um andar se não estiver no último.
+    @Override
+    public void subir() {
+        if (andarAtual < totalAndares) {
+            andarAtual++;
+            System.out.println("Subindo para o andar " + andarAtual);
+        } else {
+            System.out.println("Já está no último andar!");
+        }
     }
 
-
-
-public static void main(String[] args){
-    Scanner encontraDados = new Scanner(System.in);
-    System.out.print("Capacidade do elevador: ");
-    int x = encontraDados.nextInt();
-    System.out.print("Andares do predio: ");
-    int y = encontraDados.nextInt();
-    
-    Elevador q1 = new Elevador();
-    q1.inicializar(x, y);
-
-
-    q1.subir();
-    q1.subir();
-    q1.entrar();
-    q1.entrar();
-    q1.subir();
-    q1.entrar();
-    q1.entrar();
-    q1.entrar();
-    q1.entrar();
-    q1.subir();
-    q1.entrar();
-    q1.entrar();
-    q1.descer();
-    q1.descer();
-    q1.descer();
-    q1.descer();
-    q1.sair();
-    q1.sair();
-    q1.sair();
-    q1.sair();
-    q1.sair();
-    
-    System.out.println("Este elevador esta vazio: " + q1.estaVazio());
-    System.out.println("Quantas pessoas tem: " + q1.pessoasPresentes());
-    
-    encontraDados.close();
+    // Método descer: desce um andar se não estiver no térreo.
+    @Override
+    public void descer() {
+        if (andarAtual > 0) {
+            andarAtual--;
+            System.out.println("Descendo para o andar " + andarAtual);
+        } else {
+            System.out.println("Já está no térreo!");
+        }
     }
-    
+
+    // Métodos para obter o status do elevador (opcional)
+    public int getAndarAtual() {
+        return andarAtual;
+    }
+
+    public int getPessoasPresentes() {
+        return pessoasPresentes;
+    }
+}
 }
